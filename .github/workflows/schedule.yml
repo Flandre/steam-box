@@ -21,6 +21,7 @@ jobs:
           GIST_ID: c177ad036c4413849c96cd09076ef75a
           STEAM_API_KEY: ${{ secrets.STEAM_API_KEY }}
           STEAM_ID: ${{ secrets.STEAM_ID }}
+          APP_ID: 960170
     steps:
 
     - name: Set up Go 1.x
