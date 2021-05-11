@@ -53,7 +53,7 @@ func (b *Box) UpdateGist(ctx context.Context, id string, gist *github.Gist) erro
 }
 
 // GetPlayTime gets the top 5 Steam games played in descending order from the Steam API.
-func (b *Box) GetPlayTime(ctx context.Context, steamID uint64, multiLined bool, appID ...uint32) ([]string, error) {
+func (b *Box) GetPlayTime(ctx context.Context, steamID uint64, multiLined bool, ignoreAppIdMap, appendAppIdMap, appID ...uint32) ([]string, error) {
 	params := &steam.GetOwnedGamesParams{
 		SteamID:                steamID,
 		IncludeAppInfo:         true,
@@ -78,6 +78,10 @@ func (b *Box) GetPlayTime(ctx context.Context, steamID uint64, multiLined bool, 
 			break
 		}
 
+		if ignoreAppIdMap[game.Appid] == "1" {
+			continue
+		}
+
 		hours := int(math.Floor(float64(game.PlaytimeForever / 60)))
 		mins := int(math.Floor(float64(game.PlaytimeForever % 60)))
 
@@ -87,12 +91,34 @@ func (b *Box) GetPlayTime(ctx context.Context, steamID uint64, multiLined bool, 
 			hoursLine := fmt.Sprintf("						    🕘 %d hrs %d mins", hours, mins)
 			lines = append(lines, hoursLine)
 		} else {
+			// test
 			line := pad(getNameEmoji(game.Appid, game.Name), " ", 35) + " " +
-				pad(fmt.Sprintf("🕘 %d hrs %d mins", hours, mins), "", 16)
+				pad(fmt.Sprintf("🕘 %d hrs %d mins %d", hours, mins, math.Floor(float64(game.Appid))), "", 16)
 			lines = append(lines, line)
 		}
 		max++
 	}
+
+	for _, game := range gameRet.Games {
+		if appendAppIdMap[game.Appid] == "1" {
+			hours := int(math.Floor(float64(game.PlaytimeForever / 60)))
+			mins := int(math.Floor(float64(game.PlaytimeForever % 60)))
+	
+			if multiLined {
+				gameLine := getNameEmoji(game.Appid, game.Name)
+				lines = append(lines, gameLine)
+				hoursLine := fmt.Sprintf("						    🕘 %d hrs %d mins", hours, mins)
+				lines = append(lines, hoursLine)
+			} else {
+				// test
+				line := pad(getNameEmoji(game.Appid, game.Name), " ", 35) + " " +
+					pad(fmt.Sprintf("🕘 %d hrs %d mins %d", hours, mins, math.Floor(float64(game.Appid))), "", 16)
+				lines = append(lines, line)
+			}
+		}
+	}
+
+
 	return lines, nil
 }
 

@@ -17,7 +17,11 @@ func main() {
 	steamAPIKey := os.Getenv("STEAM_API_KEY")
 	steamID, _ := strconv.ParseUint(os.Getenv("STEAM_ID"), 10, 64)
 	appIDs := os.Getenv("APP_ID")
+	ignoreIDs := os.Getenv("IGNORE_ID")
+	appendIDs := os.Getenv("APPEND_ID")
 	appIDList := make([]uint32, 0)
+	ignoreAppIdMap := make(map[uint32]string)
+	appendAppIdMap := make(map[uint32]string)
 
 	for _, appID := range strings.Split(appIDs, ",") {
 		appid, err := strconv.ParseUint(appID, 10, 32)
@@ -25,6 +29,22 @@ func main() {
 			continue
 		}
 		appIDList = append(appIDList, uint32(appid))
+	}
+
+	for _, ignoreID := range strings.Split(ignoreIDs, ",") {
+		ignoreAppId, err := strconv.ParseUint(ignoreID, 10, 32)
+		if err != nil {
+			continue
+		}
+		ignoreAppIdMap[uint32(ignoreAppId)] = "1"
+	}
+
+	for _, appendID := range strings.Split(appendIDs, ",") {
+		appendAppId, err := strconv.ParseUint(appendID, 10, 32)
+		if err != nil {
+			continue
+		}
+		appendAppIdMap[uint32(appendAppId)] = "1"
 	}
 
 	ghToken := os.Getenv("GH_TOKEN")
@@ -68,7 +88,7 @@ func main() {
 
 	if steamOption == "ALLTIME" {
 		filename = "🎮 Steam playtime leaderboard"
-		lines, err = box.GetPlayTime(ctx, steamID, multiLined, appIDList...)
+		lines, err = box.GetPlayTime(ctx, steamID, multiLined, ignoreAppIdMap, appendAppIdMap, appIDList...)
 		if err != nil {
 			panic("GetPlayTime err:" + err.Error())
 		}
