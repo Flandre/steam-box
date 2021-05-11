@@ -78,7 +78,7 @@ func (b *Box) GetPlayTime(ctx context.Context, steamID uint64, multiLined bool, 
 			break
 		}
 
-		if ignoreAppIdMap[game.Appid] == "1" {
+		if ignoreAppIdMap[strconv.ParseUint(game.Appid, 10, 32)] == "1" {
 			continue
 		}
 
@@ -100,7 +100,7 @@ func (b *Box) GetPlayTime(ctx context.Context, steamID uint64, multiLined bool, 
 	}
 
 	for _, game := range gameRet.Games {
-		if appendAppIdMap[game.Appid] == "1" {
+		if appendAppIdMap[strconv.ParseUint(game.Appid, 10, 32)] == "1" {
 			hours := int(math.Floor(float64(game.PlaytimeForever / 60)))
 			mins := int(math.Floor(float64(game.PlaytimeForever % 60)))
 	
