@@ -231,6 +231,7 @@ func getNameEmoji(id int, name string) string {
 		960170: "💽 ",     // DJMAX Respect V
 		620980: "🔦 ",     // Beat Saber
 		1329410: "🀄 ",    // 雀魂麻将(MahjongSoul)
+		322330: "🍗 ",    // Don't Starve Together
 	}
 
 	if emoji, ok := nameEmojiMap[id]; ok {
