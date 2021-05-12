@@ -9,7 +9,6 @@ import (
 	"os"
 	"sort"
 	"strings"
-	"strconv"
 
 	steam "github.com/YouEclipse/steam-go/pkg"
 	"github.com/google/go-github/github"
