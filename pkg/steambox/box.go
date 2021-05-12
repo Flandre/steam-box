@@ -74,6 +74,26 @@ func (b *Box) GetPlayTime(ctx context.Context, steamID uint64, multiLined bool, 
 	})
 
 	for _, game := range gameRet.Games {
+		if appendAppIdMap[uint32(game.Appid)] == "1" {
+			hours := int(math.Floor(float64(game.PlaytimeForever / 60)))
+			mins := int(math.Floor(float64(game.PlaytimeForever % 60)))
+	
+			if multiLined {
+				gameLine := getNameEmoji(game.Appid, game.Name)
+				lines = append(lines, gameLine)
+				hoursLine := fmt.Sprintf("						    🕘 %d hrs %d mins", hours, mins)
+				lines = append(lines, hoursLine)
+			} else {
+				// test
+				line := pad(getNameEmoji(game.Appid, game.Name), " ", 35) + " " +
+					pad(fmt.Sprintf("🕘 %d hrs %d mins", hours, mins), "", 16)
+				lines = append(lines, line)
+			}
+			max++
+		}
+	}
+
+	for _, game := range gameRet.Games {
 		if max >= 5 {
 			break
 		}
@@ -93,29 +113,10 @@ func (b *Box) GetPlayTime(ctx context.Context, steamID uint64, multiLined bool, 
 		} else {
 			// test
 			line := pad(getNameEmoji(game.Appid, game.Name), " ", 35) + " " +
-				pad(fmt.Sprintf("🕘 %d hrs %d mins %d", hours, mins,game.Appid), "", 16)
+				pad(fmt.Sprintf("🕘 %d hrs %d mins", hours, mins), "", 16)
 			lines = append(lines, line)
 		}
 		max++
-	}
-
-	for _, game := range gameRet.Games {
-		if appendAppIdMap[uint32(game.Appid)] == "1" {
-			hours := int(math.Floor(float64(game.PlaytimeForever / 60)))
-			mins := int(math.Floor(float64(game.PlaytimeForever % 60)))
-	
-			if multiLined {
-				gameLine := getNameEmoji(game.Appid, game.Name)
-				lines = append(lines, gameLine)
-				hoursLine := fmt.Sprintf("						    🕘 %d hrs %d mins", hours, mins)
-				lines = append(lines, hoursLine)
-			} else {
-				// test
-				line := pad(getNameEmoji(game.Appid, game.Name), " ", 35) + " " +
-					pad(fmt.Sprintf("🕘 %d hrs %d mins %d", hours, mins, game.Appid), "", 16)
-				lines = append(lines, line)
-			}
-		}
 	}
 
 
