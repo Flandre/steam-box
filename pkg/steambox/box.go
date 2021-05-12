@@ -223,7 +223,7 @@ func getNameEmoji(id int, name string) string {
 		1250410: "🛩️ ",    // Microsoft Flight Simulator
 		1091500: "🦾 ",     // Cyberpunk 2077
 
-		323910: "🦾 ",     // steamVR
+		250820: "🦾 ",     // steamVR
 		289070: "🗿 ",     // Sid Meier's Civilization VI
 		813780: "🐑 ",     // Age of Empires II: Definitive Edition
 		397540: "🎡 ",     // Borderlands 3
