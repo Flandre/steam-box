@@ -93,7 +93,7 @@ func (b *Box) GetPlayTime(ctx context.Context, steamID uint64, multiLined bool, 
 		} else {
 			// test
 			line := pad(getNameEmoji(game.Appid, game.Name), " ", 35) + " " +
-				pad(fmt.Sprintf("🕘 %d hrs %d mins %d", hours, mins, math.Floor(float64(game.Appid))), "", 16)
+				pad(fmt.Sprintf("🕘 %d hrs %d mins %d", hours, mins,game.Appid), "", 16)
 			lines = append(lines, line)
 		}
 		max++
@@ -112,7 +112,7 @@ func (b *Box) GetPlayTime(ctx context.Context, steamID uint64, multiLined bool, 
 			} else {
 				// test
 				line := pad(getNameEmoji(game.Appid, game.Name), " ", 35) + " " +
-					pad(fmt.Sprintf("🕘 %d hrs %d mins %d", hours, mins, math.Floor(float64(game.Appid))), "", 16)
+					pad(fmt.Sprintf("🕘 %d hrs %d mins %d", hours, mins, game.Appid), "", 16)
 				lines = append(lines, line)
 			}
 		}
